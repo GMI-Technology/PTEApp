@@ -14,7 +14,10 @@ admin.initializeApp();
 const isLocal = !process.env.K_SERVICE;
 
 // Export the Express app as a Firebase function
-exports.app = functions.https.onRequest(app);
+// Set a custom timeout (e.g., 3 minutes) for the functions
+exports.app = functions
+    .runWith({ timeoutSeconds: 180 }) // Set timeout to 3 minutes (180 seconds)
+    .https.onRequest(app);
 
 // POST /fetch endpoint
 app.post("/fetch", async (req, res) => {
